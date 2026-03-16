@@ -1,26 +1,157 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+.small-caps {
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeInSimple {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-simple {
+  animation: fadeInSimple 1s ease-out forwards;
+}
+
+.glass {
+  background: color-mix(in oklab, var(--background) 70%, transparent);
+  backdrop-filter: blur(8px);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f0df;
+  --foreground: #211d1a;
+  --color-parchment: #f6f0df;
+  --color-paper: #f9f5e8;
+  --color-ink: #211d1a;
+  --color-muted: #5e5450;
+  --color-midnight: #1b2848;
+  --color-burgundy: #6f1d32;
+  --color-royal: #432f6f;
+  --color-gold: #bf9b30;
+  --color-gold-soft: #d8cba2;
+  --gradient-1: rgba(191, 155, 48, 0.06);
+  --gradient-2: rgba(67, 47, 111, 0.05);
+  --gradient-3: rgba(111, 29, 50, 0.04);
+  --color-selection-bg: color-mix(in oklab, var(--color-gold) 45%, white 55%);
+  --color-selection-text: var(--color-midnight);
+}
+
+[data-theme="dark"] {
+  --background: #0a0d14; /* Deep Abyss Navy */
+  --foreground: #d1d5db;
+  --color-parchment: #0a0d14;
+  --color-paper: #121826;
+  --color-ink: #e5e7eb;
+  --color-muted: #94a3b8;
+  --color-midnight: #93c5fd;
+  --color-burgundy: #f87171;
+  --color-royal: #818cf8;
+  --color-gold: #d4af37;
+  --color-gold-soft: #1e293b;
+  --gradient-1: rgba(212, 175, 55, 0.03); /* Muted Bronze */
+  --gradient-2: rgba(129, 140, 248, 0.02); /* Deep Indigo */
+  --gradient-3: rgba(248, 113, 113, 0.01); /* Deep Rose */
+  --color-selection-bg: color-mix(in oklab, var(--color-gold) 40%, black 60%);
+  --color-selection-text: var(--color-ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-body);
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-ink);
+  font-family: var(--font-body), "Lora", "Noto Serif", "Times New Roman", serif;
+  font-size: clamp(1.06rem, 1.01rem + 0.22vw, 1.25rem);
+  line-height: 1.85;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "onum" 1, "pnum" 1;
+  background-image: 
+    radial-gradient(circle at 15% 12%, var(--gradient-1) 0, transparent 25%),
+    radial-gradient(circle at 88% 18%, var(--gradient-2) 0, transparent 22%),
+    linear-gradient(180deg, var(--gradient-3) 0%, transparent 140px);
+  background-attachment: fixed;
+}
+
+.font-heading {
+  font-family: var(--font-heading), "EB Garamond", serif;
+  letter-spacing: -0.01em;
+  font-feature-settings: "kern" 1, "liga" 1, "dlig" 1, "onum" 1;
+  font-variant-ligatures: common-ligatures discretionary-ligatures;
+}
+
+.font-ui {
+  font-family: var(--font-ui), "Be Vietnam Pro", sans-serif;
+  letter-spacing: 0.01em;
+}
+
+article p {
+  text-wrap: pretty;
+  hyphens: auto;
+  margin-bottom: 1.5rem;
+}
+
+article p:last-child {
+  margin-bottom: 0;
+}
+
+::selection {
+  background: var(--color-selection-bg);
+  color: var(--color-selection-text);
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 1.03rem;
+    line-height: 1.82;
+  }
+}
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  
+  aside, 
+  button, 
+  footer,
+  .print-hidden {
+    display: none !important;
+  }
+
+  article {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  p, blockquote, table {
+    page-break-inside: avoid;
+  }
 }
